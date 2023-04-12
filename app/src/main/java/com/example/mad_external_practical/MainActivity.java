@@ -3,8 +3,13 @@ package com.example.mad_external_practical;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import android.app.KeyguardManager;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
@@ -140,6 +145,30 @@ public class MainActivity extends AppCompatActivity {
     // showing toast it takes a string as parameter
     private void notifyUser(String message)
     {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+//        NotificationManager notif=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+//        Notification notify=new Notification.Builder
+//                (getApplicationContext()).setContentTitle("Notification").setContentText(message).
+//                setContentTitle("push notification").setSmallIcon(R.drawable.ic_launcher_foreground).build();
+//
+//        notify.flags |= Notification.FLAG_AUTO_CANCEL;
+//        notif.notify(0, notify);
+        NotificationChannel channel = new NotificationChannel
+                ("Normal Notification" , "Normal Notification", NotificationManager.IMPORTANCE_DEFAULT);
+                        NotificationManager manager =
+                        getSystemService(NotificationManager.class);
+        manager.createNotificationChannel(channel);
+
+        NotificationCompat.Builder builder = new
+                NotificationCompat.Builder
+                (MainActivity.this,"Normal Notification");
+        builder.setContentTitle("Normal Notification");
+        builder.setContentText(message);
+                builder.setSmallIcon(R.drawable.ic_launcher_background);
+        builder.setAutoCancel(true);
+        NotificationManagerCompat managerCompat =
+                NotificationManagerCompat.from
+                        (MainActivity.this);
+        managerCompat.notify(1, builder.build());
     }
 }
